@@ -15,3 +15,7 @@ type Node struct {
 	RightChild *Node
 	Color      Color
 }
+
+func NewNode() *Node {
+	return &Node{Color: Red}
+}
