@@ -78,8 +78,8 @@ func (n *node) balance() error {
 }
 
 func (n *node) findUncle() *node {
-	if n.ChildType == LeftChild {
-		return n.Parent.RightChild
+	if n.Parent.ChildType == LeftChild {
+		return n.Parent.Parent.RightChild
 	}
-	return n.Parent.LeftChild
+	return n.Parent.Parent.LeftChild
 }
