@@ -47,7 +47,7 @@ func (t *rbTree) Insert(key int, value int) error {
 	return nil
 }
 
-func (parentNode *node) insert(key int, value int) error {
+func (parentNode *node) insert(key int, value int) (*node, error) {
 	if key > parentNode.Key {
 		if parentNode.RightChild == nil {
 			newnode := &node{Key: key, Value: value, Color: Red}
@@ -70,18 +70,38 @@ func (parentNode *node) insert(key int, value int) error {
 	}
 	if key == parentNode.Key {
 		parentNode.Value = value
-		return nil
+		return nil, nil
 	}
-	return errors.New("Node could not be inserted")
+	return nil, errors.New("Node could not be inserted")
 }
 
-func (n *node) balance() error {
+func (n *node) balance() (*node, error) {
+	var newRoot *node
 	if n.Parent.Color == Black {
-		return nil
+		return nil, nil
 	}
-	uncle := n.findUncle()
+	parent, uncle, grandparent := n.defineFamily()
 
-	return errors.New("Could not balance")
+	if uncle == nil || uncle.Color == Black {
+		if n.ChildType == LeftChild {
+			if grandparent.Parent == nil {
+				newRoot = parent
+			}
+			parent.Parent = grandparent.Parent
+			parent.RightChild = grandparent
+			grandparent.Parent = parent
+			parent.Color = Black
+			grandparent.Color = Red
+			return newRoot, nil
+		}
+		if grandparent.Parent == nil {
+			newRoot = parent
+		}
+		parent.LeftChild = grandparent
+		grandparent.Parent = n.Parent
+		return newRoot, nil
+	}
+	return nil, errors.New("Could not balance")
 }
 
 func (n *node) findUncle() *node {
@@ -89,4 +109,15 @@ func (n *node) findUncle() *node {
 		return n.Parent.Parent.RightChild
 	}
 	return n.Parent.Parent.LeftChild
+}
+
+func (n *node) defineFamily() (parent, uncle, grandparent *node) {
+	if n.Parent.ChildType == LeftChild {
+		uncle = n.Parent.Parent.RightChild
+	} else {
+		uncle = n.Parent.Parent.LeftChild
+	}
+	parent = n.Parent
+	grandparent = n.Parent.Parent
+	return
 }
