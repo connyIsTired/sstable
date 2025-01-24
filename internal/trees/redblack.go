@@ -1,5 +1,7 @@
 package trees
 
+import "errors"
+
 const (
 	Red color = iota
 	Black
@@ -54,5 +56,5 @@ func (n *node) insert(key int, value int) error {
 		n.Value = value
 		return nil
 	}
-	return nil
+	return errors.New("Node could not be inserted")
 }
