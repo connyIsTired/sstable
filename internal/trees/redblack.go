@@ -37,7 +37,14 @@ func NewRBTree(key int, value int) *rbTree {
 }
 
 func (t *rbTree) Insert(key int, value int) error {
-	return t.Root.insert(key, value)
+	newRoot, err := t.Root.insert(key, value)
+	if err != nil {
+		return err
+	}
+	if newRoot != nil {
+		t.Root = newRoot
+	}
+	return nil
 }
 
 func (parentNode *node) insert(key int, value int) error {
