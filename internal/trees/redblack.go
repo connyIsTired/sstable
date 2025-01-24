@@ -75,3 +75,10 @@ func (n *node) balance() error {
 
 	return errors.New("Could not balance")
 }
+
+func (n *node) findUncleColor() color {
+	if n.ChildType == LeftChild {
+		return n.Parent.RightChild.Color
+	}
+	return n.Parent.LeftChild.Color
+}
