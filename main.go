@@ -6,14 +6,22 @@ import (
 )
 
 func main() {
-	index := trees.NewRBTree(110, 0)
-	err := index.Insert(120, 0)
-	if err != nil {
-		fmt.Println(err)
-	}
-	err = index.Insert(115, 0)
-	if err != nil {
-		fmt.Println(err)
-	}
-	fmt.Printf("%v,%v,%v", index.Root.Key, index.Root.LeftChild.Key, index.Root.RightChild.Key)
+	index := trees.NewRBTree(10, 0)
+	index.Insert(5, 0)
+	index.Insert(15, 0)
+	index.Insert(13, 0)
+	index.Insert(17, 0)
+	index.Insert(3, 0)
+	index.Insert(7, 0)
+	index.Insert(16, 0)
+	fmt.Printf("%v,%v,%v,%v,%v,%v,%v,%v",
+		index.Root.Color,
+		index.Root.LeftChild.Color,
+		index.Root.LeftChild.LeftChild.Color,
+		index.Root.LeftChild.RightChild.Color,
+		index.Root.RightChild.Color,
+		index.Root.RightChild.LeftChild.Color,
+		index.Root.RightChild.RightChild.Color,
+		index.Root.RightChild.RightChild.LeftChild.Color,
+	)
 }

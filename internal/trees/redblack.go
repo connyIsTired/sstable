@@ -101,7 +101,14 @@ func (n *node) balance() (*node, error) {
 		grandparent.Parent = n.Parent
 		return newRoot, nil
 	}
-	return nil, errors.New("Could not balance")
+	parent.Color = Black
+	uncle.Color = Black
+	if grandparent.Parent == nil {
+		grandparent.Color = Black
+		return nil, nil
+	}
+	grandparent.Color = Red
+	return grandparent.balance()
 }
 
 func (n *node) findUncle() *node {
