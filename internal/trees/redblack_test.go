@@ -63,3 +63,15 @@ func TestCanInsertGrandChildrenNodes(t *testing.T) {
 			randVal+5)
 	}
 }
+
+func TestCanUpdateNodeValue(t *testing.T) {
+	randKey := rand.Int()
+	randVal := rand.Int()
+	newVal := rand.Int()
+	index := NewRBTree(randKey, randVal)
+	index.Insert(randKey, newVal)
+
+	if index.Root.Value != newVal {
+		t.Fatalf("Value in node was not changed. Was %v, expected %v", index.Root.Value, newVal)
+	}
+}

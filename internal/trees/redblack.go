@@ -50,5 +50,9 @@ func (n *node) insert(key int, value int) error {
 		n.LeftChild.insert(key, value)
 		return nil
 	}
+	if key == n.Key {
+		n.Value = value
+		return nil
+	}
 	return nil
 }
