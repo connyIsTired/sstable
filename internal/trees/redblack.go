@@ -72,13 +72,14 @@ func (n *node) balance() error {
 	if n.Parent.Color == Black {
 		return nil
 	}
+	uncle := n.findUncle()
 
 	return errors.New("Could not balance")
 }
 
-func (n *node) findUncleColor() color {
+func (n *node) findUncle() *node {
 	if n.ChildType == LeftChild {
-		return n.Parent.RightChild.Color
+		return n.Parent.RightChild
 	}
-	return n.Parent.LeftChild.Color
+	return n.Parent.LeftChild
 }
