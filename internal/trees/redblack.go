@@ -88,6 +88,7 @@ func (n *node) balance() (*node, error) {
 				newRoot = parent
 			}
 			parent.Parent = grandparent.Parent
+			grandparent.RightChild = parent.RightChild
 			parent.RightChild = grandparent
 			grandparent.Parent = parent
 			parent.Color = Black
@@ -109,13 +110,6 @@ func (n *node) balance() (*node, error) {
 	}
 	grandparent.Color = Red
 	return grandparent.balance()
-}
-
-func (n *node) findUncle() *node {
-	if n.Parent.ChildType == LeftChild {
-		return n.Parent.Parent.RightChild
-	}
-	return n.Parent.Parent.LeftChild
 }
 
 func (n *node) defineFamily() (parent, uncle, grandparent *node) {
