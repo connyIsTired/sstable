@@ -88,7 +88,7 @@ func (n *node) balance() (*node, error) {
 				newRoot = parent
 			}
 			parent.Parent = grandparent.Parent
-			grandparent.RightChild = parent.RightChild
+			grandparent.LeftChild = parent.RightChild
 			parent.RightChild = grandparent
 			grandparent.Parent = parent
 			parent.Color = Black
