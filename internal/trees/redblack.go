@@ -9,13 +9,7 @@ const (
 	Black
 )
 
-const (
-	LeftChild childType = iota
-	RightChild
-)
-
 type color int
-type childType int
 
 type rbTree struct {
 	Root *node
@@ -28,7 +22,6 @@ type node struct {
 	LeftChild  *node
 	RightChild *node
 	Color      color
-	ChildType  childType
 }
 
 func NewRBTree(key int, value int) *rbTree {
@@ -53,7 +46,6 @@ func (parentNode *node) insert(key int, value int) (*node, error) {
 			newnode := &node{Key: key, Value: value, Color: Red}
 			parentNode.RightChild = newnode
 			newnode.Parent = parentNode
-			newnode.ChildType = RightChild
 			return newnode.balance()
 		}
 		return parentNode.RightChild.insert(key, value)
@@ -63,7 +55,6 @@ func (parentNode *node) insert(key int, value int) (*node, error) {
 			newnode := &node{Key: key, Value: value, Color: Red}
 			parentNode.LeftChild = newnode
 			newnode.Parent = parentNode
-			newnode.ChildType = LeftChild
 			return newnode.balance()
 		}
 		return parentNode.LeftChild.insert(key, value)
@@ -83,11 +74,12 @@ func (n *node) balance() (*node, error) {
 	parent, uncle, grandparent := n.defineFamily()
 
 	if uncle == nil || uncle.Color == Black {
-		if n.ChildType == LeftChild {
+		if n.Key < parent.Key {
 			if grandparent.Parent == nil {
 				newRoot = parent
 			}
 			parent.Parent = grandparent.Parent
+			greatgrandparent.LeftChild = parent
 			grandparent.LeftChild = parent.RightChild
 			parent.RightChild = grandparent
 			grandparent.Parent = parent
