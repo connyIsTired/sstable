@@ -71,7 +71,7 @@ func (n *node) balance() (*node, error) {
 	if n.Parent.Color == Black {
 		return nil, nil
 	}
-	parent, uncle, grandparent := n.defineFamily()
+	parent, uncle, grandparent, greatgrandparent := n.defineFamily()
 
 	if uncle == nil || uncle.Color == Black {
 		if n.Key < parent.Key {
@@ -104,13 +104,14 @@ func (n *node) balance() (*node, error) {
 	return grandparent.balance()
 }
 
-func (n *node) defineFamily() (parent, uncle, grandparent *node) {
-	if n.Parent.ChildType == LeftChild {
+func (n *node) defineFamily() (parent, uncle, grandparent, greatgrandparent *node) {
+	if n.Parent.Parent.Key > n.Parent.Key {
 		uncle = n.Parent.Parent.RightChild
 	} else {
 		uncle = n.Parent.Parent.LeftChild
 	}
 	parent = n.Parent
-	grandparent = n.Parent.Parent
+	grandparent = parent.Parent
+	greatgrandparent = grandparent.Parent
 	return
 }
