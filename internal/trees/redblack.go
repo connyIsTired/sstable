@@ -2,6 +2,7 @@ package trees
 
 import (
 	"errors"
+	"fmt"
 )
 
 const (
@@ -114,4 +115,25 @@ func (n *node) defineFamily() (parent, uncle, grandparent, greatgrandparent *nod
 	grandparent = parent.Parent
 	greatgrandparent = grandparent.Parent
 	return
+}
+func (t *rbTree) String() string {
+	if t.Root == nil {
+		return "[]"
+	}
+	return t.Root.stringHelper()
+}
+
+func (n *node) stringHelper() string {
+	if n == nil {
+		return ""
+	}
+	var result string
+	result = fmt.Sprintf("%v", n.Key)
+	if n.LeftChild != nil {
+		result = fmt.Sprintf("%v %v", n.LeftChild.stringHelper(), result)
+	}
+	if n.RightChild != nil {
+		result = fmt.Sprintf("%v %v", result, n.RightChild.stringHelper())
+	}
+	return result
 }
