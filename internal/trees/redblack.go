@@ -82,7 +82,9 @@ func (n *node) balance() (*node, error) {
 			}
 			parent.Parent = grandparent.Parent
 			// TODO: Below can cause null reference. GreatGrandParent Might not exist
-			greatgrandparent.LeftChild = parent
+			if greatgrandparent != nil {
+				greatgrandparent.LeftChild = parent
+			}
 			grandparent.LeftChild = parent.RightChild
 			parent.RightChild = grandparent
 			grandparent.Parent = parent
@@ -92,6 +94,9 @@ func (n *node) balance() (*node, error) {
 		}
 		if grandparent.Parent == nil {
 			newRoot = parent
+		}
+		if greatgrandparent != nil {
+			greatgrandparent.RightChild = parent
 		}
 		grandparent.RightChild = parent.LeftChild
 		parent.LeftChild = grandparent

@@ -2,6 +2,7 @@ package trees
 
 import (
 	"math/rand"
+	"strings"
 	"testing"
 )
 
@@ -69,5 +70,22 @@ func TestCanUpdateNodeValue(t *testing.T) {
 
 	if index.Root.Value != newVal {
 		t.Fatalf("Value in node was not changed. Was %v, expected %v", index.Root.Value, newVal)
+	}
+}
+
+func TestStringerIteratesCorrectly(t *testing.T) {
+	input := []int{1, 2, 3, 4, 5, 6, 7, 8}
+	expected := "0 1 2 3 4 5 6 7 8"
+	index := NewRBTree(0, 0)
+
+	for _, v := range input {
+		index.Insert(v, 0)
+	}
+
+	stringOutput := index.String()
+
+	result := strings.Compare(expected, stringOutput)
+	if result != 0 {
+		t.Fatalf("Slices are not equal.\nExpected %v\nGot %v", expected, stringOutput)
 	}
 }
