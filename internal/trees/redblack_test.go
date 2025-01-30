@@ -45,22 +45,18 @@ func TestCanInsertGrandChildrenNodes(t *testing.T) {
 	index.Insert(randKey+10, randVal+10)
 	index.Insert(randKey+15, randVal+15)
 	index.Insert(randKey+5, randVal+5)
-	childNode := index.Root.RightChild
-	if childNode.RightChild.Key != randKey+15 || childNode.RightChild.Value != randVal+15 {
-		t.Fatalf(
-			"Child Right Child Key/Value was %v/%v, expected %v/%v",
-			childNode.RightChild.Key,
-			childNode.RightChild.Value,
-			randKey+15,
-			randVal+15)
+
+	if index.Root.Key != randKey+10 {
+		t.Fatalf("Root key was expected to be %v but was %v", randKey+10, index.Root.Key)
 	}
-	if childNode.LeftChild.Key != randKey+5 || childNode.LeftChild.Value != randVal+5 {
-		t.Fatalf(
-			"Child Left Child Key/Value was %v/%v, expected %v/%v",
-			childNode.LeftChild.Key,
-			childNode.LeftChild.Value,
-			randKey+5,
-			randVal+5)
+	if index.Root.RightChild.Key != randKey+15 {
+		t.Fatalf("Root key was expected to be %v but was %v", randKey+15, index.Root.RightChild.Key)
+	}
+	if index.Root.LeftChild.Key != randKey {
+		t.Fatalf("Root key was expected to be %v but was %v", randKey, index.Root.LeftChild.Key)
+	}
+	if index.Root.LeftChild.RightChild.Key != randKey+5 {
+		t.Fatalf("Root key was expected to be %v but was %v", randKey+5, index.Root.LeftChild.RightChild.Key)
 	}
 }
 

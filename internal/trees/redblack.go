@@ -72,6 +72,7 @@ func (n *node) balance() (*node, error) {
 	if n.Parent.Color == Black {
 		return nil, nil
 	}
+	// TODO: Why can't line below go 4 lines up?
 	parent, uncle, grandparent, greatgrandparent := n.defineFamily()
 
 	if uncle == nil || uncle.Color == Black {
@@ -80,6 +81,7 @@ func (n *node) balance() (*node, error) {
 				newRoot = parent
 			}
 			parent.Parent = grandparent.Parent
+			// TODO: Below can cause null reference. GreatGrandParent Might not exist
 			greatgrandparent.LeftChild = parent
 			grandparent.LeftChild = parent.RightChild
 			parent.RightChild = grandparent
@@ -91,8 +93,12 @@ func (n *node) balance() (*node, error) {
 		if grandparent.Parent == nil {
 			newRoot = parent
 		}
+		grandparent.RightChild = parent.LeftChild
 		parent.LeftChild = grandparent
-		grandparent.Parent = n.Parent
+		parent.Parent = grandparent.Parent
+		grandparent.Parent = parent
+		parent.Color = Black
+		grandparent.Color = Red
 		return newRoot, nil
 	}
 	parent.Color = Black
@@ -116,6 +122,27 @@ func (n *node) defineFamily() (parent, uncle, grandparent, greatgrandparent *nod
 	greatgrandparent = grandparent.Parent
 	return
 }
+
+func (t *rbTree) GetNode(key int) *node {
+	if key == t.Root.Key {
+		return t.Root
+	}
+	return t.Root.getNodeHelper(key)
+}
+
+func (n *node) getNodeHelper(key int) *node {
+	if key == n.Key {
+		return n
+	}
+	if key < n.Key && n.LeftChild != nil {
+		return n.LeftChild.getNodeHelper(key)
+	}
+	if key < n.Key && n.RightChild != nil {
+		return n.RightChild.getNodeHelper(key)
+	}
+	return nil
+}
+
 func (t *rbTree) String() string {
 	if t.Root == nil {
 		return "[]"
