@@ -40,13 +40,12 @@ func TestCanInsertRootNodes(t *testing.T) {
 }
 
 func TestCanInsertGrandChildrenNodes(t *testing.T) {
-	randKey := rand.Int()
+	randKey := 100
 	randVal := rand.Int()
 	index := NewRBTree(randKey, randVal)
 	index.Insert(randKey+10, randVal+10)
 	index.Insert(randKey+15, randVal+15)
 	index.Insert(randKey+5, randVal+5)
-
 	if index.Root.Key != randKey+10 {
 		t.Fatalf("Root key was expected to be %v but was %v", randKey+10, index.Root.Key)
 	}
@@ -73,11 +72,26 @@ func TestCanUpdateNodeValue(t *testing.T) {
 	}
 }
 
+func TestGetNodeReturnsValueIfPresent(t *testing.T) {
+	var randVals []int
+	index := NewRBTree(0, 0)
+	for i := 0; i < 10; i++ {
+		randVal := rand.Int()
+		randVals = append(randVals, randVal)
+		index.Insert(randVal, 0)
+	}
+	//randArrayIndex := rand.Intn(5)
+	result := index.GetNode(randVals[5])
+
+	if result == nil {
+		t.Fatalf("Expected to find node with key %v but returned nil\nValues in tree are %s\nValues in slice are %v", randVals[5], index, randVals)
+	}
+}
+
 func TestStringerIteratesCorrectly(t *testing.T) {
 	input := []int{1, 2, 3, 4, 5, 6, 7, 8}
 	expected := "0 1 2 3 4 5 6 7 8"
 	index := NewRBTree(0, 0)
-
 	for _, v := range input {
 		index.Insert(v, 0)
 	}

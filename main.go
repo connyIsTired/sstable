@@ -6,21 +6,14 @@ import (
 )
 
 func main() {
+	x := []int{1726, 1479, 1331, 7289, 2773, 2101, 3175, 7436, 4742, 5449}
 	index := trees.NewRBTree(0, 0)
-	index.Insert(1, 0)
-	index.Insert(2, 0)
-	index.Insert(3, 0)
-	index.Insert(4, 0)
+	for i := range x {
+		index.Insert(x[i], 0)
+		//fmt.Printf("inserting %v\n", x[i])
+		//fmt.Println(index)
+		//fmt.Printf("root is %v\n", index.Root.Key)
+	}
+	fmt.Println(index.GetNode(2101))
 
-	fmt.Println(index.Root.Key)
-	fmt.Println(index.Root.LeftChild.Key)
-	fmt.Println(index.Root.RightChild.Key)
-	fmt.Println(index.Root.RightChild.RightChild.Key)
-	fmt.Println(index.Root.RightChild.LeftChild.Key)
-
-	fmt.Println(index.Root.Color)
-	fmt.Println(index.Root.LeftChild.Color)
-	fmt.Println(index.Root.RightChild.Color)
-	fmt.Println(index.Root.RightChild.RightChild.Color)
-	fmt.Println(index.Root.RightChild.LeftChild.Color)
 }
