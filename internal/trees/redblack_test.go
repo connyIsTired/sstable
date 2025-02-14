@@ -133,9 +133,7 @@ func TestEachPathHasSameNumberOfNodes(t *testing.T) {
 	ns := &[]*node{}
 	getAllLeafNodes(rbTree.Root, ns)
 	blackNodeCount := []int{}
-
 	var fn func(n *node, count int) int
-
 	fn = func(n *node, count int) int {
 		if n.Color == Black {
 			count += 1
@@ -149,6 +147,7 @@ func TestEachPathHasSameNumberOfNodes(t *testing.T) {
 	for _, node := range *ns {
 		blackNodeCount = append(blackNodeCount, fn(node, 0))
 	}
+
 	for i := range blackNodeCount {
 		if blackNodeCount[0] != blackNodeCount[i] {
 			t.Fatal("Each tree branch does not contain the same number of black nodes")
